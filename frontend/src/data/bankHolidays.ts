@@ -1,0 +1,18 @@
+export const ukBankHolidays = [
+  { date: '2024-01-01', name: 'New Year’s Day' },
+  { date: '2024-03-29', name: 'Good Friday' },
+  { date: '2024-04-01', name: 'Easter Monday' },
+  { date: '2024-05-06', name: 'Early May bank holiday' },
+  { date: '2024-05-27', name: 'Spring bank holiday' },
+  { date: '2024-08-26', name: 'Summer bank holiday' },
+  { date: '2024-12-25', name: 'Christmas Day' },
+  { date: '2024-12-26', name: 'Boxing Day' },
+  { date: '2025-01-01', name: 'New Year’s Day' },
+  { date: '2025-04-18', name: 'Good Friday' },
+  { date: '2025-04-21', name: 'Easter Monday' },
+  { date: '2025-05-05', name: 'Early May bank holiday' },
+  { date: '2025-05-26', name: 'Spring bank holiday' },
+  { date: '2025-08-25', name: 'Summer bank holiday' },
+  { date: '2025-12-25', name: 'Christmas Day' },
+  { date: '2025-12-26', name: 'Boxing Day' },
+];

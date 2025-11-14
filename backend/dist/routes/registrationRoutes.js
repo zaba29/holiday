@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const registrationController_1 = require("../controllers/registrationController");
+const auth_1 = require("../middleware/auth");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.post('/', registrationController_1.register);
+router.get('/:token', auth_1.authenticate, (0, auth_1.authorize)([client_1.Role.ADMIN]), registrationController_1.showRegistration);
+router.post('/:token/approve', auth_1.authenticate, (0, auth_1.authorize)([client_1.Role.ADMIN]), registrationController_1.approve);
+router.post('/:token/reject', auth_1.authenticate, (0, auth_1.authorize)([client_1.Role.ADMIN]), registrationController_1.reject);
+router.post('/:token/more-info', auth_1.authenticate, (0, auth_1.authorize)([client_1.Role.ADMIN]), registrationController_1.askInfo);
+router.post('/info-response/:token', registrationController_1.respondInfo);
+exports.default = router;
