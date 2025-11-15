@@ -1,0 +1,131 @@
+// Prisma schema for holiday management system
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  REJECTED
+  DISABLED
+}
+
+enum RegistrationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  MORE_INFO
+}
+
+enum LeaveType {
+  HOLIDAY
+  UNPAID
+  SICK
+  OTHER
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  MORE_INFO
+}
+
+enum AuthMode {
+  OPEN_WHEN_EMPTY
+  PASSWORD_ONLY
+}
+
+model User {
+  id               Int             @id @default(autoincrement())
+  firstName        String
+  lastName         String
+  email            String          @unique
+  employeeNumber   String          @unique
+  passwordHash     String
+  role             Role            @default(EMPLOYEE)
+  status           UserStatus      @default(PENDING)
+  annualAllocation Int             @default(28)
+  remainingDays    Int             @default(28)
+  daysTaken        Int             @default(0)
+  department       String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  leaveRequests    LeaveRequest[]
+  registrationMessages RegistrationMessage[]
+  leaveMessages    LeaveMessage[]
+}
+
+model RegistrationRequest {
+  id             Int                  @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  email          String               @unique
+  employeeNumber String               @unique
+  passwordHash   String
+  status         RegistrationStatus   @default(PENDING)
+  reason         String?
+  adminMessage   String?
+  approvalToken  String               @unique
+  infoToken      String?              @unique
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  messages       RegistrationMessage[]
+}
+
+model RegistrationMessage {
+  id           Int                  @id @default(autoincrement())
+  request      RegistrationRequest  @relation(fields: [requestId], references: [id])
+  requestId    Int
+  senderRole   Role
+  senderUser   User?                @relation(fields: [senderUserId], references: [id])
+  senderUserId Int?
+  body         String
+  createdAt    DateTime             @default(now())
+}
+
+model LeaveRequest {
+  id            Int          @id @default(autoincrement())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        Int
+  startDate     DateTime
+  endDate       DateTime
+  daysRequested Int
+  type          LeaveType
+  status        LeaveStatus  @default(PENDING)
+  employeeNote  String?
+  adminNote     String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  messages      LeaveMessage[]
+}
+
+model LeaveMessage {
+  id         Int         @id @default(autoincrement())
+  leave      LeaveRequest @relation(fields: [leaveId], references: [id])
+  leaveId    Int
+  senderRole Role
+  senderUser User?        @relation(fields: [senderUserId], references: [id])
+  senderUserId Int?
+  body       String
+  createdAt  DateTime     @default(now())
+}
+
+model SystemSetting {
+  id                    Int      @id @default(1)
+  authMode              AuthMode @default(OPEN_WHEN_EMPTY)
+  allowSelfRegistration Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
