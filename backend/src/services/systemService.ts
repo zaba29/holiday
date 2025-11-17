@@ -6,7 +6,7 @@ import { config } from '../config/env';
 export const ensureSystemSettings = async () => {
   const existing = await prisma.systemSetting.findFirst();
   if (existing) return existing;
-  return prisma.systemSetting.create({ data: {} });
+  return prisma.systemSetting.create({ data: { allowSelfRegistration: true } });
 };
 
 export const getSystemSettings = async () => ensureSystemSettings();

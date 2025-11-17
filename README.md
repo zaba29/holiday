@@ -10,7 +10,7 @@ A full-stack holiday and absence management portal for small UK companies. It pr
 - Leave booking flow with validation against UK bank holidays and available allowance.
 - Admin tools to approve, reject, or request more information for leave and registration requests.
 - Configurable SMTP email notifications and UK bank holiday list.
-- Prisma/PostgreSQL data layer with seed script for the initial admin user (`admin@work.flow` / `admin` — development only, change immediately in production).
+- Prisma/PostgreSQL data layer with seed script for the initial admin user (`admin@company.test` / `admin` — development only, change immediately in production).
 - React + Material UI frontend with responsive layout and calendar widget.
 - Jest unit tests for core service flows (registration, login, leave lifecycle).
 
@@ -47,7 +47,7 @@ npx prisma db seed --preview-feature
 
 After seeding, sign in with the following credentials (development convenience only—change or delete immediately in any real deployment):
 
-- **Email:** `admin@work.flow`
+- **Email:** `admin@company.test`
 - **Password:** `admin`
 
 The login screen will redirect to the setup wizard if no users exist. Seeding ensures you can reach the admin dashboard without running the wizard manually during local development.

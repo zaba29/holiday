@@ -4,13 +4,13 @@ const client_1 = require("@prisma/client");
 const authService_1 = require("../src/services/authService");
 const env_1 = require("../src/config/env");
 const prisma = new client_1.PrismaClient();
-const DEV_ADMIN_EMAIL = 'admin@work.flow';
+const DEV_ADMIN_EMAIL = 'admin@company.test';
 const DEV_ADMIN_PASSWORD = 'admin';
 async function main() {
     await prisma.systemSetting.upsert({
         where: { id: 1 },
-        update: {},
-        create: {},
+        update: { allowSelfRegistration: true },
+        create: { allowSelfRegistration: true },
     });
     const adminExists = await prisma.user.findUnique({ where: { email: DEV_ADMIN_EMAIL } });
     if (!adminExists) {
@@ -29,7 +29,7 @@ async function main() {
                 remainingDays: allocation,
             },
         });
-        console.log('Seeded development admin user admin@work.flow / admin. Change immediately in production.');
+        console.log('Seeded development admin user admin@company.test / admin. Change immediately in production.');
     }
     else {
         console.log('Admin user already present, skipping creation.');

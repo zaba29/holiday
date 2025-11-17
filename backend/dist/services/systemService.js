@@ -12,7 +12,7 @@ const ensureSystemSettings = async () => {
     const existing = await prisma_1.default.systemSetting.findFirst();
     if (existing)
         return existing;
-    return prisma_1.default.systemSetting.create({ data: {} });
+    return prisma_1.default.systemSetting.create({ data: { allowSelfRegistration: true } });
 };
 exports.ensureSystemSettings = ensureSystemSettings;
 const getSystemSettings = async () => (0, exports.ensureSystemSettings)();
